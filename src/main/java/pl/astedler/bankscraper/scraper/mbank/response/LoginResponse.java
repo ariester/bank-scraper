@@ -21,4 +21,5 @@ public class LoginResponse {
     public String getTabId() {
         return node.get("tabId").asText();
     }
+
 }

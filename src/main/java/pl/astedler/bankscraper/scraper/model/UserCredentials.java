@@ -17,4 +17,5 @@ public class UserCredentials {
     public String getPassword() {
         return password;
     }
+
 }

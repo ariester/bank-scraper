@@ -1,22 +1,22 @@
 package pl.astedler.bankscraper;
 
-import org.apache.http.auth.InvalidCredentialsException;
-import pl.astedler.bankscraper.scraper.BankAccountsScraper;
+import pl.astedler.bankscraper.exception.InvalidCredentialsException;
+import pl.astedler.bankscraper.scraper.BankScraper;
 import pl.astedler.bankscraper.scraper.model.BankAccount;
 import pl.astedler.bankscraper.scraper.model.UserCredentials;
 import pl.astedler.bankscraper.userinterface.UserInterface;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 public class Application {
 
     private UserInterface userInterface;
-    private BankAccountsScraper bankAccountsScraper;
+    private BankScraper bankScraper;
 
-    public Application(UserInterface userInterface, BankAccountsScraper bankAccountsScraper) {
+    public Application(UserInterface userInterface, BankScraper bankScraper) {
         this.userInterface = userInterface;
-        this.bankAccountsScraper = bankAccountsScraper;
+        this.bankScraper = bankScraper;
     }
 
     public void run() {
@@ -29,11 +29,12 @@ public class Application {
 
     private void fetchBankAccounts() throws IOException, InvalidCredentialsException {
         UserCredentials userCredentials = userInterface.getUserCredentials();
-        List<BankAccount> bankAccounts = bankAccountsScraper.getBankAccounts(userCredentials);
+        Collection<BankAccount> bankAccounts = bankScraper.fetchBankAccounts(userCredentials);
         userInterface.displayBankAccounts(bankAccounts);
     }
 
     private void printError(Exception e) {
         System.out.println(e.getMessage());
     }
+
 }

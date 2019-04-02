@@ -11,7 +11,6 @@ import org.jsoup.select.Elements;
 import pl.astedler.bankscraper.scraper.mbank.request.RequestHeaders;
 import pl.astedler.bankscraper.scraper.mbank.request.RequestHelper;
 import pl.astedler.bankscraper.scraper.mbank.response.LoginResponse;
-import pl.astedler.bankscraper.scraper.mbank.response.ResponseHelper;
 import pl.astedler.bankscraper.scraper.model.BankAccount;
 
 import java.io.IOException;
@@ -20,8 +19,6 @@ import java.util.List;
 
 public class MainPage {
 
-    private static final String MAIN_PAGE_URL = "https://online.mbank.pl/pl";
-    private static final String ACCOUNTS_REQUEST_URL = "https://online.mbank.pl/pl/MyDesktop/Desktop/GetAccountsList";
     private static final String VERIFICATION_TOKEN_META_TAG = "meta[name=__AjaxRequestVerificationToken]";
 
     private MainPage() {
@@ -40,7 +37,7 @@ public class MainPage {
     }
 
     private static String getHtmlSourceCode() throws IOException {
-        return RequestHelper.getPage(MAIN_PAGE_URL);
+        return RequestHelper.getPage(MBankUrl.MAIN_PAGE_URL);
     }
 
     private static String extractVerificationToken(String htmlPage) {
@@ -51,10 +48,10 @@ public class MainPage {
     }
 
     private static Request preparePostRequest(LoginResponse loginResponse, String verificationToken) {
-        return Request.Post(ACCOUNTS_REQUEST_URL)
-                .setHeaders(RequestHeaders.COMMON_HEADERS)
-                .setHeader("X-Request-Verification-Token", verificationToken)
-                .setHeader("X-Tab-Id", loginResponse.getTabId());
+        return Request.Post(MBankUrl.ACCOUNTS_REQUEST_URL)
+            .setHeaders(RequestHeaders.COMMON_HEADERS)
+            .setHeader("X-Request-Verification-Token", verificationToken)
+            .setHeader("X-Tab-Id", loginResponse.getTabId());
     }
 
     private static List<BankAccount> parseAccountsResponse(String responseContent) throws IOException {
@@ -71,7 +68,7 @@ public class MainPage {
     private static List<BankAccount> getBankAccounts(ArrayNode accountsNode) {
         List<BankAccount> accounts = new ArrayList<>();
         for (JsonNode accountNode : accountsNode) {
-            BankAccount bankAccount = ResponseHelper.createBankAccountFromJson(accountNode);
+            BankAccount bankAccount = new BankAccount(accountNode);
             accounts.add(bankAccount);
         }
         return accounts;

@@ -48,8 +48,8 @@ class LoginResponseTest {
 
     synchronized LoginResponse createLoginResponse(boolean successful, String errorMessageTitle, String tabId) throws IOException {
         String json = "{\"button\":false,\"errorMessageBody\":\"\",\"errorMessageTitle\":" + errorMessageTitle +
-                ",\"redirectUrl\":\"/pl\",\"successful\":" + successful + ",\"tabId\":\"" + tabId + "\"" +
-                ",\"sessionKeyForUW\":null,\"regulationsApproval\":false,\"betaTestingApproval\":false,\"implicitTestingApproval\":false,\"allAprovalsSaved\":false}";
+            ",\"redirectUrl\":\"/pl\",\"successful\":" + successful + ",\"tabId\":\"" + tabId + "\"" +
+            ",\"sessionKeyForUW\":null,\"regulationsApproval\":false,\"betaTestingApproval\":false,\"implicitTestingApproval\":false,\"allAprovalsSaved\":false}";
         JsonNode node = mapper.readTree(json);
         return new LoginResponse(node);
     }

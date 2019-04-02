@@ -3,7 +3,7 @@ package pl.astedler.bankscraper.userinterface;
 import pl.astedler.bankscraper.scraper.model.BankAccount;
 import pl.astedler.bankscraper.scraper.model.UserCredentials;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class ConsoleUI implements UserInterface {
@@ -30,8 +30,9 @@ public class ConsoleUI implements UserInterface {
         return scanner.nextLine();
     }
 
-    public void displayBankAccounts(List<BankAccount> accounts) {
+    public void displayBankAccounts(Collection<BankAccount> accounts) {
         System.out.println("List of your accounts:");
         accounts.forEach(System.out::println);
     }
+
 }
