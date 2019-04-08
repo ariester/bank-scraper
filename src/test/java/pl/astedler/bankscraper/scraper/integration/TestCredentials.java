@@ -1,4 +1,4 @@
-package pl.astedler.bankscraper.scraper;
+package pl.astedler.bankscraper.scraper.integration;
 
 public class TestCredentials {
 

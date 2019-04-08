@@ -2,11 +2,10 @@ package pl.astedler.bankscraper.scraper.mbank.page;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.NullNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.StringEntity;
 import pl.astedler.bankscraper.exception.InvalidCredentialsException;
+import pl.astedler.bankscraper.scraper.mbank.jsonHelper.LoginJsonNode;
 import pl.astedler.bankscraper.scraper.mbank.request.RequestHeaders;
 import pl.astedler.bankscraper.scraper.mbank.request.RequestHelper;
 import pl.astedler.bankscraper.scraper.mbank.response.LoginResponse;
@@ -18,9 +17,7 @@ import java.io.IOException;
 public class LoginPage {
 
     private static final String SEED_REGEX = "app\\.initialize\\('(.*?)'"; //seed from app.initialize('seed'
-
     private static final String INVALID_CREDENTIALS_MESSAGE = "Nieprawidłowy identyfikator lub hasło.";
-
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private LoginPage() {
@@ -44,24 +41,14 @@ public class LoginPage {
     }
 
     private static String prepareJson(UserCredentials userCredentials) throws IOException {
-        ObjectNode rootNode = mapper.createObjectNode();
-        NullNode nullNode = NullNode.getInstance();
+        LoginJsonNode loginJson = new LoginJsonNode()
+            .putUserCredentials(userCredentials)
+            .putSeed(getSeed())
+            .putScenario("Default")
+            .addUWAdditionalParamsNode()
+            .addAdditionalFields();
 
-        ObjectNode childNode = mapper.createObjectNode();
-        childNode.set("InOut", nullNode);
-        childNode.set("ReturnAddress", nullNode);
-        childNode.set("Source", nullNode);
-
-        rootNode.put("UserName", userCredentials.getUsername())
-            .put("Password", userCredentials.getPassword())
-            .put("Seed", getSeed())
-            .put("Scenario", "Default")
-            .set("UWAdditionalParams", childNode);
-
-        rootNode.put("Lang", "")
-            .put("HrefHasHash", false);
-
-        return mapper.writeValueAsString(rootNode);
+        return mapper.writeValueAsString(loginJson.getNode());
     }
 
     private static String getSeed() throws IOException {

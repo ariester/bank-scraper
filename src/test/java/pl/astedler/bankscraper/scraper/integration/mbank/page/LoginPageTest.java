@@ -1,8 +1,9 @@
-package pl.astedler.bankscraper.scraper.mbank.page;
+package pl.astedler.bankscraper.scraper.integration.mbank.page;
 
 import org.junit.jupiter.api.Test;
 import pl.astedler.bankscraper.exception.InvalidCredentialsException;
-import pl.astedler.bankscraper.scraper.TestCredentials;
+import pl.astedler.bankscraper.scraper.integration.TestCredentials;
+import pl.astedler.bankscraper.scraper.mbank.page.LoginPage;
 import pl.astedler.bankscraper.scraper.mbank.response.LoginResponse;
 import pl.astedler.bankscraper.scraper.model.UserCredentials;
 

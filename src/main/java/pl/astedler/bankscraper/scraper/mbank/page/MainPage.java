@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import pl.astedler.bankscraper.scraper.mbank.jsonHelper.BankAccountWrapper;
 import pl.astedler.bankscraper.scraper.mbank.request.RequestHeaders;
 import pl.astedler.bankscraper.scraper.mbank.request.RequestHelper;
 import pl.astedler.bankscraper.scraper.mbank.response.LoginResponse;
@@ -68,7 +69,7 @@ public class MainPage {
     private static List<BankAccount> getBankAccounts(ArrayNode accountsNode) {
         List<BankAccount> accounts = new ArrayList<>();
         for (JsonNode accountNode : accountsNode) {
-            BankAccount bankAccount = new BankAccount(accountNode);
+            BankAccount bankAccount = BankAccountWrapper.createBankAccount(accountNode);
             accounts.add(bankAccount);
         }
         return accounts;
